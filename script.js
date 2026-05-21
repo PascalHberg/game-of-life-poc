@@ -9,9 +9,8 @@ canvas.width = WIDTH * CELL_SIZE;
 canvas.height = HEIGHT * CELL_SIZE;
 
 let running = false;
-let intervalId = null;
-
 let grid = createRandomGrid();
+let lastGrid = null;
 
 
 // --------------------------
@@ -36,26 +35,47 @@ function createEmptyGrid() {
 // --------------------------
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Change Detection - nur zeichnen wenn sich was ändert
+    if (JSON.stringify(lastGrid) === JSON.stringify(grid)) return;
+    
+    lastGrid = grid.map(row => [...row]);
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Weißer Hintergrund
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Grid-Linien einmalig zeichnen (optimiert)
+    ctx.strokeStyle = "#ddd";
+    ctx.lineWidth = 1;
+    
+    for (let i = 0; i <= WIDTH; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * CELL_SIZE, 0);
+        ctx.lineTo(i * CELL_SIZE, canvas.height);
+        ctx.stroke();
+    }
+    
+    for (let i = 0; i <= HEIGHT; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, i * CELL_SIZE);
+        ctx.lineTo(canvas.width, i * CELL_SIZE);
+        ctx.stroke();
+    }
+
+    // Nur lebende Zellen zeichnen (Performance!)
+    ctx.fillStyle = "black";
     for (let y = 0; y < HEIGHT; y++) {
         for (let x = 0; x < WIDTH; x++) {
-
-            ctx.fillStyle = grid[y][x] ? "black" : "white";
-
-            ctx.fillRect(
-                x * CELL_SIZE,
-                y * CELL_SIZE,
-                CELL_SIZE,
-                CELL_SIZE
-            );
-
-            ctx.strokeRect(
-                x * CELL_SIZE,
-                y * CELL_SIZE,
-                CELL_SIZE,
-                CELL_SIZE
-            );
+            if (grid[y][x] === 1) {
+                ctx.fillRect(
+                    x * CELL_SIZE + 1,
+                    y * CELL_SIZE + 1,
+                    CELL_SIZE - 2,
+                    CELL_SIZE - 2
+                );
+            }
         }
     }
 }
@@ -96,11 +116,9 @@ function step() {
 
             const n = neighbors(x, y);
 
-            if (grid[y][x] === 1) {
-                newGrid[y][x] = (n === 2 || n === 3) ? 1 : 0;
-            } else {
-                newGrid[y][x] = (n === 3) ? 1 : 0;
-            }
+            newGrid[y][x] = (grid[y][x] === 1)
+                ? (n === 2 || n === 3 ? 1 : 0)
+                : (n === 3 ? 1 : 0);
         }
     }
 
@@ -109,21 +127,16 @@ function step() {
 
 
 // --------------------------
-// LOOP CONTROL
+// ANIMATION LOOP
 // --------------------------
 
-function startLoop() {
-    if (intervalId) return;
-
-    intervalId = setInterval(() => {
+function loop() {
+    if (running) {
         step();
-        draw();
-    }, 100);
-}
-
-function stopLoop() {
-    clearInterval(intervalId);
-    intervalId = null;
+    }
+    
+    draw();
+    requestAnimationFrame(loop);
 }
 
 
@@ -139,30 +152,48 @@ startBtn.onclick = () => {
     if (running) {
         startBtn.textContent = "Stop";
         startBtn.style.background = "red";
-        startLoop();
     } else {
         startBtn.textContent = "Start";
         startBtn.style.background = "green";
-        stopLoop();
     }
 };
 
 document.getElementById("stepBtn").onclick = () => {
     if (!running) {
         step();
+        lastGrid = null;
         draw();
     }
 };
 
 document.getElementById("renewBtn").onclick = () => {
     grid = createRandomGrid();
+    lastGrid = null;
     draw();
 };
 
 document.getElementById("clearBtn").onclick = () => {
     grid = createEmptyGrid();
+    lastGrid = null;
     draw();
 };
+
+
+// --------------------------
+// CLICK TOGGLE
+// --------------------------
+
+canvas.addEventListener("click", function (e) {
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+    const y = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+    
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+        grid[y][x] = grid[y][x] ? 0 : 1;
+        lastGrid = null;
+        draw();
+    }
+});
 
 
 // --------------------------
@@ -170,3 +201,4 @@ document.getElementById("clearBtn").onclick = () => {
 // --------------------------
 
 draw();
+loop();
