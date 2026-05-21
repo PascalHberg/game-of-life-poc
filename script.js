@@ -11,6 +11,8 @@ canvas.height = HEIGHT * CELL_SIZE;
 let running = false;
 let grid = createRandomGrid();
 let lastGrid = null;
+let frameCount = 0;
+const UPDATE_FREQUENCY = 10; // Nur alle 10 Frames updaten
 
 
 // --------------------------
@@ -132,7 +134,13 @@ function step() {
 
 function loop() {
     if (running) {
-        step();
+        frameCount++;
+        
+        // Nur alle UPDATE_FREQUENCY Frames updaten
+        if (frameCount >= UPDATE_FREQUENCY) {
+            step();
+            frameCount = 0;
+        }
     }
     
     draw();
