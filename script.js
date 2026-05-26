@@ -188,6 +188,29 @@ document.getElementById("clearBtn").onclick = () => {
 
 
 // --------------------------
+// MODAL
+// --------------------------
+
+const infoBtn = document.getElementById('infoBtn');
+const infoModal = document.getElementById('infoModal');
+const closeBtn = document.querySelector('.close-btn');
+
+infoBtn.addEventListener('click', () => {
+    infoModal.classList.remove('hidden');
+});
+
+closeBtn.addEventListener('click', () => {
+    infoModal.classList.add('hidden');
+});
+
+infoModal.addEventListener('click', (e) => {
+    if (e.target === infoModal) {
+        infoModal.classList.add('hidden');
+    }
+});
+
+
+// --------------------------
 // CLICK TOGGLE
 // --------------------------
 
