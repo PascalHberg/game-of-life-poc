@@ -1,13 +1,11 @@
 body {
-
     margin: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: #f0f0f0;
+    overflow-x: hidden;
 }
 
 .info-header {
@@ -31,29 +29,36 @@ body {
 }
 
 .controls {
-
     margin: 15px;
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 button {
-
     padding: 10px 15px;
-
     cursor: pointer;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     background: #667eea;
     color: white;
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.1s;
+    font-weight: 500;
+    touch-action: manipulation; /* Prevent double-tap zoom on mobile */
+    user-select: none;
 }
 
 button:hover {
     background: #764ba2;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 #infoBtn {
@@ -64,11 +69,24 @@ button:hover {
     background: #38a169;
 }
 
-canvas {
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+}
 
-    border: 1px solid black;
+canvas {
+    border: 2px solid #333;
     background: white;
-    margin: 20px 0;
+    margin: 10px 0;
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 300px);
+    touch-action: none; /* Prevent default touch behaviors */
 }
 
 /* Modal */
@@ -83,6 +101,8 @@ canvas {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal.hidden {
@@ -97,6 +117,7 @@ canvas {
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .close-btn {
@@ -109,9 +130,17 @@ canvas {
     cursor: pointer;
     color: #666;
     padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
 }
 
 .close-btn:hover {
+    background: #f0f0f0;
     color: #333;
 }
 
@@ -123,13 +152,139 @@ canvas {
 .modal-content h3 {
     color: #764ba2;
     margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .modal-content ul {
     padding-left: 20px;
+    margin: 10px 0;
 }
 
 .modal-content li {
     margin: 8px 0;
-    line-height: 1.5;
+    line-height: 1.6;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+    .info-header {
+        padding: 15px;
+    }
+
+    .info-header h1 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .controls {
+        margin: 10px;
+        gap: 6px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 14px;
+        flex: 1 0 calc(50% - 3px);
+        min-width: 100px;
+    }
+
+    button:active {
+        background: #555;
+    }
+
+    canvas {
+        border: 1px solid #333;
+        margin: 5px 0;
+    }
+
+    .modal-content {
+        max-width: 95vw;
+        padding: 20px;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+    }
+
+    .modal-content h3 {
+        font-size: 14px;
+    }
+
+    .modal-content li {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-header {
+        padding: 10px;
+    }
+
+    .info-header h1 {
+        font-size: 18px;
+        margin-bottom: 3px;
+    }
+
+    .subtitle {
+        font-size: 11px;
+    }
+
+    .controls {
+        margin: 8px;
+        gap: 4px;
+    }
+
+    button {
+        padding: 8px 10px;
+        font-size: 12px;
+        flex: 1 0 calc(50% - 2px);
+    }
+
+    canvas {
+        max-height: calc(100vh - 250px);
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        padding: 15px;
+        max-height: 90vh;
+    }
+
+    .close-btn {
+        top: 5px;
+        right: 10px;
+        font-size: 24px;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) {
+    .info-header {
+        padding: 8px;
+    }
+
+    .info-header h1 {
+        font-size: 16px;
+    }
+
+    .controls {
+        margin: 5px;
+        gap: 4px;
+    }
+
+    button {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    canvas {
+        max-height: calc(100vh - 150px);
+    }
 }
