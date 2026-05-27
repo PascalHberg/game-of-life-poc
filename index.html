@@ -2,7 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="true">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="true">
+    <meta name="theme-color" content="#667eea">
     <title>Game of Life</title>
 
     <link rel="stylesheet" href="style.css">
@@ -11,7 +15,7 @@
 
     <header class="info-header">
         <h1>Conways Spiel des Lebens</h1>
-        <p class="subtitle">Ein Zelluläres Automaton - Klicke auf Zellen, um sie lebendig zu machen</p>
+        <p class="subtitle">Ein Zelluläres Automaton - Klicke auf Zellen oder malen Sie mit dem Finger</p>
     </header>
 
     <div class="controls">
@@ -22,7 +26,9 @@
         <button id="infoBtn">ℹ️ Regeln</button>
     </div>
 
-    <canvas id="canvas"></canvas>
+    <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
 
     <!-- Info-Modal -->
     <div id="infoModal" class="modal hidden">
@@ -38,11 +44,18 @@
             </ul>
             <h3>Bedienung:</h3>
             <ul>
-                <li><strong>Klick auf Zellen:</strong> Toggle zwischen lebendig/tot</li>
+                <li><strong>Klick/Tippen auf Zellen:</strong> Toggle zwischen lebendig/tot</li>
+                <li><strong>Halten und Ziehen:</strong> Malen Sie Zellen wie mit einem Pinsel</li>
                 <li><strong>Start:</strong> Simulation ausführen</li>
                 <li><strong>Step:</strong> Einen Generationenschritt vorwärts</li>
                 <li><strong>Renew:</strong> Zufälliges Gitter generieren</li>
                 <li><strong>Clear:</strong> Gitter zurücksetzen</li>
+            </ul>
+            <h3>Mobile Tipps:</h3>
+            <ul>
+                <li>Verwende einen Stylus für präzisere Steuerung</li>
+                <li>Halte den Finger gedrückt und fahre, um wie mit einem Pinsel zu malen</li>
+                <li>Klicke auf tote Zellen zum Malen, auf lebende zum Löschen</li>
             </ul>
         </div>
     </div>
