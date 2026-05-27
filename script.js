@@ -1,6 +1,6 @@
 const WIDTH = 60;
 const HEIGHT = 60;
-const CELL_SIZE = 10;
+const CELL_SIZE = 20;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
