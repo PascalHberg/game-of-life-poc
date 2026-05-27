@@ -1,5 +1,5 @@
-const WIDTH = 60;
-const HEIGHT = 60;
+const WIDTH = 50;
+const HEIGHT = 30;
 const CELL_SIZE = 20;
 
 const canvas = document.getElementById("canvas");
