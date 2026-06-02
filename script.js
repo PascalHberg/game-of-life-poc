@@ -1,16 +1,17 @@
 // ============================================
-// GAME OF LIFE - PIXEL MODE
+// GAME OF LIFE - PIXEL BLOCK MODE + GRID
 // ============================================
 
 const CONFIG = {
+    CELL_SIZE: 12,              // größere Pixel-Blöcke
     UPDATE_FREQUENCY: 10
 };
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 
-let WIDTH = 200;
-let HEIGHT = 120;
+let WIDTH = 80;
+let HEIGHT = 50;
 
 let running = false;
 let grid = null;
@@ -41,16 +42,14 @@ function createGridBuffer() {
 // ============================================
 
 function initCanvas() {
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
+    canvas.width = WIDTH * CONFIG.CELL_SIZE;
+    canvas.height = HEIGHT * CONFIG.CELL_SIZE;
 
-    canvas.style.width = "100%";
-    canvas.style.maxWidth = "800px";
     canvas.style.imageRendering = "pixelated";
 }
 
 // ============================================
-// LOGIC
+// NEIGHBORS
 // ============================================
 
 function countNeighbors(x, y) {
@@ -69,6 +68,10 @@ function countNeighbors(x, y) {
     return count;
 }
 
+// ============================================
+// STEP
+// ============================================
+
 function step() {
     for (let y = 0; y < HEIGHT; y++) {
         for (let x = 0; x < WIDTH; x++) {
@@ -85,22 +88,51 @@ function step() {
 }
 
 // ============================================
-// DRAW
+// DRAW (GRID + BLOCK PIXELS)
 // ============================================
 
+function drawGrid() {
+    ctx.strokeStyle = "#ddd";
+    ctx.lineWidth = 1;
+
+    for (let x = 0; x <= WIDTH; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * CONFIG.CELL_SIZE, 0);
+        ctx.lineTo(x * CONFIG.CELL_SIZE, HEIGHT * CONFIG.CELL_SIZE);
+        ctx.stroke();
+    }
+
+    for (let y = 0; y <= HEIGHT; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * CONFIG.CELL_SIZE);
+        ctx.lineTo(WIDTH * CONFIG.CELL_SIZE, y * CONFIG.CELL_SIZE);
+        ctx.stroke();
+    }
+}
+
 function draw() {
+    // Hintergrund
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // lebende Zellen
     ctx.fillStyle = "black";
 
     for (let y = 0; y < HEIGHT; y++) {
         for (let x = 0; x < WIDTH; x++) {
             if (grid[y][x] === 1) {
-                ctx.fillRect(x, y, 1, 1);
+                ctx.fillRect(
+                    x * CONFIG.CELL_SIZE + 1,
+                    y * CONFIG.CELL_SIZE + 1,
+                    CONFIG.CELL_SIZE - 2,
+                    CONFIG.CELL_SIZE - 2
+                );
             }
         }
     }
+
+    // Raster drüber
+    drawGrid();
 }
 
 // ============================================
@@ -121,14 +153,14 @@ function loop() {
 }
 
 // ============================================
-// INPUT (pixel mapping 1:1)
+// INPUT
 // ============================================
 
 function getCell(e) {
     const rect = canvas.getBoundingClientRect();
 
-    const x = Math.floor((e.clientX - rect.left) * (WIDTH / rect.width));
-    const y = Math.floor((e.clientY - rect.top) * (HEIGHT / rect.height));
+    const x = Math.floor((e.clientX - rect.left) / CONFIG.CELL_SIZE);
+    const y = Math.floor((e.clientY - rect.top) / CONFIG.CELL_SIZE);
 
     if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
         return { x, y };
@@ -172,11 +204,23 @@ canvas.addEventListener("touchmove", (e) => {
 }, { passive: false });
 
 // ============================================
-// BUTTONS
+// BUTTONS (wie vorher inkl. Start/Stop Style)
 // ============================================
 
-document.getElementById("startBtn").onclick = () => {
+const startBtn = document.getElementById("startBtn");
+
+startBtn.onclick = () => {
     running = !running;
+
+    if (running) {
+        startBtn.textContent = "Stop";
+        startBtn.style.background = "red";
+        startBtn.style.color = "white";
+    } else {
+        startBtn.textContent = "Start";
+        startBtn.style.background = "green";
+        startBtn.style.color = "white";
+    }
 };
 
 document.getElementById("stepBtn").onclick = () => {
@@ -206,7 +250,6 @@ function init() {
     initCanvas();
     grid = createRandomGrid();
     gridBuffer = createGridBuffer();
-
     loop();
 }
 
