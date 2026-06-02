@@ -204,7 +204,7 @@ canvas.addEventListener("touchmove", (e) => {
 }, { passive: false });
 
 // ============================================
-// BUTTONS (wie vorher inkl. Start/Stop Style)
+// BUTTONS 
 // ============================================
 
 const startBtn = document.getElementById("startBtn");
@@ -241,7 +241,27 @@ document.getElementById("clearBtn").onclick = () => {
     gridBuffer = createGridBuffer();
     draw();
 };
+// ============================================
+// INFO MODAL
+// ============================================
 
+const infoBtn = document.getElementById("infoBtn");
+const infoModal = document.getElementById("infoModal");
+const closeBtn = document.querySelector(".close-btn");
+
+infoBtn.onclick = () => {
+    infoModal.classList.remove("hidden");
+};
+
+closeBtn.onclick = () => {
+    infoModal.classList.add("hidden");
+};
+
+infoModal.onclick = (e) => {
+    if (e.target === infoModal) {
+        infoModal.classList.add("hidden");
+    }
+};
 // ============================================
 // INIT
 // ============================================
