@@ -10,11 +10,9 @@ body {
 canvas {
     border: 1px solid #333;
     background: white;
+    display: block;
+    margin-top: 10px;
     image-rendering: pixelated;
-    width: 90vw;
-    height: auto;
-    max-height: 80vh;
-    touch-action: none;
 }
 
 button {
