@@ -4,9 +4,9 @@
 
 // CONFIGURATION - Responsive sizing
 const CONFIG = {
-    MIN_CELL_SIZE: 16,
+    MIN_CELL_SIZE: 10,
     MAX_CELL_SIZE: 40,
-    DEFAULT_CELL_SIZE: 24,
+    DEFAULT_CELL_SIZE: 20,
     UPDATE_FREQUENCY: 10, // Updates every N frames
     TOUCH_PAINT_MODE: true // Enable painting mode
 };
@@ -172,16 +172,16 @@ function draw() {
         dirtyRegions = [];
     }
 
-    // Draw alive cells (black)
+    // Draw alive cells as a single pixel
     ctx.fillStyle = "black";
     for (let y = 0; y < HEIGHT; y++) {
         for (let x = 0; x < WIDTH; x++) {
             if (grid[y][x] === 1) {
                 ctx.fillRect(
-                    x * CELL_SIZE + 1,
-                    y * CELL_SIZE + 1,
-                    CELL_SIZE - 2,
-                    CELL_SIZE - 2
+                    x * CELL_SIZE + Math.floor(CELL_SIZE / 2),
+                    y * CELL_SIZE + Math.floor(CELL_SIZE / 2),
+                    1,
+                    1
                 );
             }
         }
