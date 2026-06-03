@@ -4,6 +4,9 @@ Eine Implementierung von Conways Spiel des Lebens in Vanilla JavaScript. Ein int
 
 Erreichbar unter: https://game-of-life-poc-pascalhbergs-projects.vercel.app/
 
+<a href="https://vercel.app" target="_blank" rel="noopener">Game of Life live testen</a>
+
+
 ## Was ist das Spiel des Lebens?
 
 Das Spiel des Lebens ist ein Zelluläres Automaton von John Horton Conway. Es ist ein Nullspielerspiel, das sich nach einem Anfangszustand selbstständig weiterentwickelt. Das Spiel wird auf einem zweidimensionalen Gitter gespielt, bei dem jede Zelle entweder lebendig oder tot ist.
