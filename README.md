@@ -2,7 +2,7 @@
 
 Eine Implementierung von Conways Spiel des Lebens in Vanilla JavaScript. Ein interaktives webbasiertes Zelluläres Automaton, bei dem sich Zellen basierend auf einfachen Regeln vermehren, verändern und sterben.
 
-Erreichbar unter: https://game-of-life-poc-pascalhbergs-projects.vercel.app/
+Erreichbar unter:
 
 <a href="https://game-of-life-poc-pascalhbergs-projects.vercel.app/" target="_blank" rel="noopener">Game of Life live testen</a>
 
