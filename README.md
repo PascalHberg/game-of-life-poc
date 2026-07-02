@@ -4,7 +4,7 @@ Eine Implementierung von Conways Spiel des Lebens in Vanilla JavaScript. Ein int
 
 Erreichbar unter:
 
-<a href="https://game-of-life-poc-pascalhbergs-projects.vercel.app/" target="_blank" rel="noopener">Game of Life live testen</a>
+<a href="https://game-of-life-poc.vercel.app/" target="_blank" rel="noopener">Game of Life live testen</a>
 
 
 ## Was ist das Spiel des Lebens?
